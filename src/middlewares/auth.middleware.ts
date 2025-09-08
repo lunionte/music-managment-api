@@ -21,7 +21,11 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
         // já lança o erro se der errado
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtUserPayload;
         const user = await new UserService().getById(decoded.id);
-        req.user = user;
+        req.user = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+        };
         next();
     } catch (error) {
         console.error(error);
